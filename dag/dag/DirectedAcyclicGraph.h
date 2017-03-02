@@ -25,8 +25,8 @@
  *  The Node class is templated Node<T>
  *  where T is intended to be either an identifier or the item of interest.
  *  The Node class may not be const, but the thing it contains (T) may be set to be a const object
- * 
- *  Nodes may contain 
+ *
+ *  Nodes may contain
  *    - simple structures such as an int, long or pair
  *    - with polymorphic classes ( T is set to &Base of the Base class)
  *    - with Boost:Any  which allows direct insertion into the Nodes of any mixed set of class items
@@ -39,7 +39,7 @@
  *   // and now define the dag
  *    n0.addChild(n1);  // link between n0 and n1
  *    n0.addChild(n2);  // link between n0 and n2 etc
- 
+
  *    // Start at node 0
  *   DAG::BFSVisitor<INode> bfs;
  *    for (auto n : bfs.traverseChildren(n0)) {
@@ -169,7 +169,7 @@ void Node<T>::addChild(Node& node) {
 template <typename T>
 void Node<T>::accept(Visitor<TNode>& visitor) const {
   visitor.visit(this);
-};
+}
 
 /// Constructor
 template <typename N>

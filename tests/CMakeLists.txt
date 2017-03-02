@@ -7,8 +7,7 @@ include_directories(
 file(GLOB headers *.h)
 
 add_executable(tests unittest.cpp )
-target_link_libraries(tests  )
-install(TARGETS tests DESTINATION bin)
+target_link_libraries(tests)
 
 # --- adding tests for examples ------------------------------
 add_test(NAME tests COMMAND tests)

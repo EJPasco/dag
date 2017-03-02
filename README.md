@@ -1,4 +1,20 @@
 # FCC Directed Acyclic Graph Tool (DAG)
+
+## Table of Contents
+<!-- TOC -->
+
+- [FCC Directed Acyclic Graph Tool (DAG)](#fcc-directed-acyclic-graph-tool-dag)
+    - [Table of Contents](#table-of-contents)
+    - [Installation](#installation)
+    - [Implementation details](#implementation-details)
+        - [Nodes](#nodes)
+        - [Directed Acyclic Graph](#directed-acyclic-graph)
+    - [Example usage](#example-usage)
+        - [Standalone](#standalone)
+        - [Use with fcc-edm](#use-with-fcc-edm)
+
+<!-- /TOC -->
+
 The DAG tool supports traversal of a [Directed Acyclic Graph](https://en.wikipedia.org/wiki/Directed_acyclic_graph) (also known here as DAG).
 
 The tool is implemented in C++ using a templated Node class alongside a visitor algorithm.
@@ -9,8 +25,13 @@ A Floodfill algorithm is also provided which groups together nodes which are con
 
 ## Installation
 
-Download from github:
-  https://github.com/HEP-FCC/dag
+Clone from github:
+
+```
+git clone https://github.com/HEP-FCC/dag
+```
+
+Then in order to build:
 
 ```bash
 source init.sh
@@ -22,23 +43,27 @@ tests/tests
 ```
 
 optional arguments:
- * -Ddag_documentation=ON (defaults to OFF)
- * -Ddag_example=ON (defaults to OFF)
+ * Generate API docs with Doxygen (requires Doxygen installation_: `-Ddag_documentation=ON` (defaults to `OFF`)
+ * Build examples: `-Ddag_example=ON` (defaults to `OFF`)
 
-For Xcode project use: cmake -G Xcode ..
+To generate an XCode project with CMake, use:
+
+```bash
+cmake -G Xcode ..
+```
 
 ## Implementation details
 
 ### Nodes
 
-The Node class is templated,  Node\<T\> where T is intended to be either an identifier or the item of interest.
-The Node class may not be const, but the thing it contains (T) may be set to be a const object
+The Node class is templated,  `Node<T>` where `T` is intended to be either an identifier or the item of interest.
+The Node class may not be `const`, but the thing it contains (`T`) may be set to be a `const` object
 
 Nodes may contain
- * simple structures such as an int, long or pair
- * polymorphic classes ( T is set to &Base of the Base class)
- * Boost:Any  which allows direct insertion into the Nodes of any mixed set of class items
-	  here T= const Boost::Any&
+ * simple structures such as an `int`, `long` or `std::pair`
+ * polymorphic classes (`T` is set to `&Base` of the Base class)
+ * `Boost:Any`  which allows direct insertion into the Nodes of any mixed set of class items
+	  here `T= const Boost::Any&`
 
 ### Directed Acyclic Graph
 
@@ -62,21 +87,23 @@ n0.addChild(n2);  // link between n0 and n2 etc
 // Start at node 0
 DAG::BFSVisitor<INode> bfs;
 for (auto n : bfs.traverseChildren(n0)) {
-int id = n->value();
-std::cout << "Node: " << n->value()  << std::endl;
+  int id = n->value();
+  std::cout << "Node: " << n->value()  << std::endl;
 }
 ```
 
 Examples are provided for the following cases
- 1. T is an integer identifier (T is set to a const int identifier)
- 2. T is a pair
+ 1. `T` is an integer identifier (`T` is set to a `const int` identifier)
+ 2. `T` is a `std::pair`
  3. Polymorphic classes.
- 	T is set to be const &Base and the nodes include Base and Middle (derives from Base) instances.
- 	Note that &Base is used for T in order to avoid copying the classes and in order that polymorphism is available
+ 	`T` is set to be `const &Base` and the nodes include Base and Middle (derives from Base) instances.
+ 	Note that `&Base` is used for `T` in order to avoid copying the classes and in order that polymorphism is available
 
-The examples can be installed by setting the optional CMake flag:-
+The examples can be built by setting the optional CMake flag:
+
+```
 cmake -DCMAKE_INSTALL_PREFIX=../install  -Ddag_example=ON ..
+```
 
 ### Use with fcc-edm
-For an example of fcc-edm that can build the DAG from EDM particles using an installation of the DAG header see
-https://github.com/jlingema/fcc-edm/blob/graph/utilities/ParticleGraph.h
+For an example of fcc-edm that can build the DAG from EDM particles using an installation of the DAG header see the [ParticleGraph](https://github.com/HEP-FCC/fcc-edm/blob/master/utilities/ParticleGraph.h)

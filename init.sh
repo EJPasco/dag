@@ -1,8 +1,7 @@
-platform='unknown'
-sw_afs=0
-unamestr=`uname`
-
-export FCCDAG=$PWD/install
+if [ -z "$FCCDAG" ]; then
+    export FCCDAG=$PWD/install
+    echo "FCCDAG is unset, setting to $FCCDAG"
+fi
 
 
 
